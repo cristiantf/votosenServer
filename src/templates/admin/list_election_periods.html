@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Periodos Electorales</h1>
+        <div>
+            {% if current_user.is_superadmin %}
+            <button type="button" class="btn btn-warning me-2 shadow-sm font-weight-bold" data-toggle="modal" data-target="#restoreModal">
+                <i class="fas fa-upload"></i> Restaurar Respaldo
+            </button>
+            {% endif %}
+            <a href="{{ url_for('admin.add_election_period') }}" class="btn btn-primary shadow-sm font-weight-bold">
+                <i class="fas fa-plus"></i> Añadir Nuevo Periodo
+            </a>
+        </div>
+    </div>
+
+    <!-- Flash manejado en base.html -->
+
+    <div class="row">
+    {% if periods %}
+        {% for period in periods %}
+        <div class="col-md-6 mb-4">
+            <div class="card card-premium shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="card-title text-primary font-weight-bold mb-0">{{ period.name }}</h5>
+                    <div>
+                        {% if period.current_status == 'active' %}
+                            <span class="badge badge-success px-3 py-2"><i class="fas fa-play-circle"></i> En Curso</span>
+                        {% elif period.current_status == 'pending' %}
+                            <span class="badge badge-warning px-3 py-2"><i class="fas fa-clock"></i> Pendiente</span>
+                        {% elif period.current_status == 'finished' %}
+                            <span class="badge badge-secondary px-3 py-2"><i class="fas fa-check-circle"></i> Finalizada</span>
+                        {% elif period.current_status == 'manual_inactive' %}
+                            <span class="badge badge-danger px-3 py-2"><i class="fas fa-power-off"></i> Apagado Manual</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card-body py-3">
+                    <p class="text-muted small mb-3"><i class="fas fa-calendar-alt"></i> Fechas del periodo electoral automáticas.</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded mb-3">
+                        <span class="font-weight-bold text-dark">Control Manual:</span>
+                        <form action="{{ url_for('admin.toggle_active_period', period_id=period.id) }}" method="POST" class="m-0">
+                            {% if period.is_active %}
+                                <button type="submit" class="btn btn-danger font-weight-bold" title="Apagar Forzosamente">
+                                    <i class="fas fa-stop-circle"></i> Detener Forzosamente
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-success font-weight-bold" title="Reactivar">
+                                    <i class="fas fa-play-circle"></i> Reactivar Manualmente
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <a href="{{ url_for('admin.manage_election_period', period_id=period.id) }}" class="btn btn-outline-info btn-sm me-md-2 mb-2">
+                            <i class="fas fa-cogs"></i> Administrar
+                        </a>
+                        <a href="{{ url_for('admin.election_results', period_id=period.id) }}" class="btn btn-outline-success btn-sm me-md-2 mb-2">
+                            <i class="fas fa-chart-bar"></i> Resultados
+                        </a>
+                        <a href="{{ url_for('admin.edit_election_period', period_id=period.id) }}" class="btn btn-outline-warning btn-sm me-md-2 mb-2">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        {% if current_user.is_superadmin %}
+                        <a href="{{ url_for('admin.generate_manual_backup', period_id=period.id) }}" class="btn btn-outline-dark btn-sm me-md-2 mb-2" title="Descargar Respaldo (ZIP)">
+                            <i class="fas fa-download"></i> Respaldo
+                        </a>
+                        {% endif %}
+                        <form action="{{ url_for('admin.delete_election_period', period_id=period.id) }}" method="POST" class="d-inline" onsubmit="confirmDeletion(event, this, 'Eliminar Periodo', '¿Estás seguro de que quieres eliminar este periodo electoral? TODO el contenido, listas y votos se perderán permanentemente.')">
+                            <button type="submit" class="btn btn-outline-danger btn-sm mb-2"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center border-0 shadow-sm p-4">
+                <h5 class="alert-heading font-weight-bold"><i class="fas fa-info-circle"></i> No hay periodos electorales</h5>
+                <p class="mb-0">Aún no se han configurado elecciones. <a href="{{ url_for('admin.add_election_period') }}" class="font-weight-bold">Crea el primer periodo ahora</a>.</p>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-secondary-premium px-4"><i class="fas fa-arrow-left"></i> Volver al Panel de Control</a>
+    </div>
+</div>
+
+{% if current_user.is_superadmin %}
+<!-- Modal para Restaurar Respaldo -->
+<div class="modal fade" id="restoreModal" tabindex="-1" aria-labelledby="restoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+            <form action="{{ url_for('admin.restore_backup') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-header bg-warning text-dark border-0">
+                    <h5 class="modal-title font-weight-bold" id="restoreModalLabel"><i class="fas fa-exclamation-triangle"></i> Restaurar Periodo Electoral</h5>
+                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted">Sube un archivo <strong>.zip</strong> generado previamente por el sistema de respaldos. Esta acción recreará el periodo electoral, las listas, dignidades, candidatos, padrón y resultados exactos.</p>
+                    <div class="form-group mb-0">
+                        <label for="backup_file" class="font-weight-bold">Archivo ZIP de Respaldo</label>
+                        <input type="file" class="form-control-file border p-2 rounded" id="backup_file" name="backup_file" accept=".zip" required>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning font-weight-bold shadow-sm" onclick="this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Restaurando...'; this.classList.add('disabled');">
+                        <i class="fas fa-upload"></i> Ejecutar Restauración
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
