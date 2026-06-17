@@ -2,16 +2,16 @@
 
 :root {
   /* Color Palette */
-  --primary: #4F46E5;
-  --primary-hover: #4338CA;
-  --primary-light: #EEF2FF;
+  --primary: #1565c0;
+  --primary-hover: #00b8f4;
+  --primary-light: #e3f2fd;
   --secondary: #10B981;
   --secondary-hover: #059669;
   --danger: #EF4444;
   --danger-hover: #DC2626;
-  --bg-color: #F9FAFB;
+  --bg-color: #f0f8ff;
   --surface: #FFFFFF;
-  --text-main: #111827;
+  --text-main: #234567;
   --text-muted: #6B7280;
   --border: #E5E7EB;
   

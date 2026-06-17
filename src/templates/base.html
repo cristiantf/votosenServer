@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Voting System{% endblock %}</title>
+    <title>{% block title %}ISTAE - Votaciones{% endblock %}</title>
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='img/istae_logo.webp') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
@@ -11,7 +12,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom" style="position: relative; z-index: 1050;">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}"><i class="fas fa-vote-yea text-primary"></i> Sistema de Votación</a>
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/istae_logo.webp') }}" alt="ISTAE Logo" height="40" class="mr-2">
+                <span>Sistema de Votación</span>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
