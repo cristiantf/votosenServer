@@ -14,7 +14,7 @@ Este proyecto es una aplicación web de votación construida con el micro-framew
   - Función de impersonación (`Login As`) para auditoría y soporte por Super Admins.
 
 - **Plataforma de Votación y Resultados:**
-  - Interfaz UI/UX moderna, responsive y accesible basada en un diseño **Premium** de tarjetas e interacciones.
+  - Interfaz UI/UX moderna, 100% optimizada para dispositivos móviles (responsive) y accesible, basada en un diseño **Premium** de tarjetas e interacciones.
   - Iniciar sesión de forma segura con credenciales únicas.
   - Paneles de control temporizados con cuentas regresivas automáticas.
   - Visualización estructurada de las papeletas, incluyendo Voto Nulo y Voto en Blanco.

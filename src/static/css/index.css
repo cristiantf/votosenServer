@@ -156,3 +156,37 @@ body {
   border-color: var(--primary);
   background: var(--primary-light);
 }
+
+/* --- Responsive Media Queries --- */
+@media (max-width: 768px) {
+  /* Reducir paddings en cards premium para aprovechar espacio */
+  .card-premium .card-header,
+  .card-premium .card-body {
+    padding: 1rem;
+  }
+
+  /* Ajustar los tamaños de títulos grandes */
+  .display-3 {
+    font-size: 3rem;
+  }
+  .display-4 {
+    font-size: 2.25rem;
+  }
+
+  /* Botones 100% ancho en móviles por defecto */
+  .btn-premium, .btn-secondary-premium {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  /* Ajuste gráfico resultados */
+  .chart-responsive-wrapper {
+    height: 300px !important;
+  }
+}
+
+.chart-responsive-wrapper {
+  height: 400px;
+}
+

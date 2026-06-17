@@ -7,8 +7,9 @@
     <hr>
 
     {% if lists %}
-    <table class="table table-striped">
-        <thead>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">List Name</th>
@@ -31,8 +32,9 @@
                 </td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
     {% else %}
     <div class="alert alert-warning" role="alert">
         No lists were registered for this election, so no results can be displayed.

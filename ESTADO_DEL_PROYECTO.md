@@ -110,6 +110,11 @@ A partir de la revisión del código y la investigación sobre la normativa de e
 - **Padrón Inteligente:** Nuevo buscador difuso en la gestión de padrones. Permite a los administradores agregar estudiantes registrados manualmente buscando por cédula, alias o nombre real. Incluye generación automática de perfil `Voter` si este era inexistente para cuentas manuales.
 - **Modelos Refinados:** Se agregaron campos `name` y `lastname` nativos a la tabla `User` unificando la lectura de nombres entre módulos administrativos y de voto.
 
+### Sprint 9: Optimización Responsiva y Móvil (Completado)
+- **UI/UX Móvil:** Implementación de clases de diseño fluido (`table-responsive`) para prevenir desbordamientos horizontales en tablas administrativas y de resultados oficiales.
+- **Biometría Adaptativa:** Ajuste dinámico de las dimensiones de la cámara (`<video>`) y el motor de dibujo (`<canvas>`) para asegurar la validación facial (Face ID) en teléfonos inteligentes sin distorsión.
+- **Estilos Táctiles:** Inclusión de `@media queries` en la hoja de estilos global, reduciendo paddings en pantallas estrechas y configurando botones principales al 100% del ancho para facilitar la navegación con una sola mano.
+- **Gráficos Dinámicos:** Configuración del dashboard estadístico (`Chart.js`) para calcular dinámicamente su altura, mejorando la visualización de resultados en pantallas pequeñas.
 
 ## 5. Próximos Pasos Inmediatos
 1. Validaciones documentales y requisitos académicos de candidatos en caso de ser necesario por el reglamento institucional.

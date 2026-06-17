@@ -10,7 +10,7 @@ El sistema está construido siguiendo una arquitectura Monolítica Modular (Mode
 - **Base de Datos:** MySQL (Producción/Staging/Local)
 - **Migraciones:** Alembic (Flask-Migrate)
 - **Generación PDF:** fpdf2 (Generación nativa de reportes y actas)
-- **Frontend:** HTML5, Jinja2 Templates, Bootstrap 4, CSS Vainilla Premium
+- **Frontend:** HTML5, Jinja2 Templates, Bootstrap 4, CSS Vainilla Premium (Optimizado para dispositivos móviles con diseño Full Responsive)
 - **Testing:** Pytest, pytest-flask
 
 ## 2. Estructura de Directorios

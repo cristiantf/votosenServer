@@ -140,9 +140,9 @@
             title: 'Validación Biométrica',
             html: `
                 <div class="mb-3">Por favor, mira a la cámara para confirmar tu voto por <strong>${listName}</strong>.</div>
-                <div class="position-relative d-inline-block">
-                    <video id="valVideo" width="320" height="240" autoplay muted class="rounded shadow-sm border border-primary"></video>
-                    <canvas id="valCanvas" class="position-absolute" style="top:0; left:0;"></canvas>
+                <div class="position-relative d-inline-block w-100" style="max-width: 320px;">
+                    <video id="valVideo" width="320" height="240" autoplay muted class="rounded shadow-sm border border-primary w-100" style="height: auto;"></video>
+                    <canvas id="valCanvas" class="position-absolute w-100" style="top:0; left:0; height: 100%;"></canvas>
                 </div>
                 <p id="valStatus" class="font-weight-bold mt-2">Cargando...</p>
             `,
