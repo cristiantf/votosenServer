@@ -20,6 +20,7 @@ usecaseDiagram
         usecase "Iniciar Sesión" as UC1
         usecase "Ver Elecciones Activas" as UC2
         usecase "Consultar Papeleta Electoral" as UC3
+        usecase "Validación Biométrica (Face ID)" as UC3B
         usecase "Emitir Voto (Secreto)" as UC4
         usecase "Ver Resultados Oficiales" as UC5
     }
@@ -27,6 +28,7 @@ usecaseDiagram
     Voter --> UC1
     Voter --> UC2
     Voter --> UC3
+    Voter --> UC3B
     Voter --> UC4
     Voter --> UC5
 
@@ -44,6 +46,7 @@ usecaseDiagram
         usecase "Impersonar Usuarios (Login As)" as UC15
         usecase "Ver Registro de Auditoría" as UC16
         usecase "Gestionar y Restaurar Respaldos" as UC17
+        usecase "Configurar Ajustes del Sistema" as UC18
     }
 
     Admin --> UC1
@@ -60,6 +63,7 @@ usecaseDiagram
     SuperAdmin --> UC15
     SuperAdmin --> UC16
     SuperAdmin --> UC17
+    SuperAdmin --> UC18
 ```
 
 ---
@@ -73,6 +77,8 @@ classDiagram
     class User {
         +Integer id
         +String username
+        +String name
+        +String lastname
         +String password_hash
         +Boolean is_admin
         +Boolean is_superadmin
@@ -86,6 +92,7 @@ classDiagram
         +String cedula
         +String name
         +String lastname
+        +Text face_descriptor
     }
 
     class ElectionPeriod {
@@ -136,12 +143,18 @@ classDiagram
 
     class AuditLog {
         +Integer id
-        +Integer admin_id
+        +Integer user_id
         +String action
-        +String target_type
-        +Integer target_id
         +DateTime timestamp
-        +String ip_address
+        +Text details
+    }
+
+    class SystemSettings {
+        +Integer id
+        +Boolean registration_enabled
+        +DateTime registration_start_date
+        +DateTime registration_end_date
+        +Boolean is_registration_open()
     }
 
     %% Relaciones
@@ -170,4 +183,7 @@ El diagrama ilustra cómo el sistema garantiza el voto secreto (requerido por le
 - **NO existe** ninguna relación en la base de datos entre `VoterParticipation` (quién votó) y `Vote` (qué eligió), asegurando un escrutinio blindado y anónimo.
 
 ### B. Máquinas de Estados (Propiedades Dinámicas)
-La clase `ElectionPeriod` no tiene un simple estado estático, sino que su disponibilidad se calcula dinámicamente mediante las funciones `current_status()` y `is_voting_open()`. Estas comparan constantemente el tiempo del servidor (`datetime.utcnow()`) con `start_date` y `end_date`, cerrando y abriendo las urnas de forma automática.
+La clase `ElectionPeriod` no tiene un simple estado estático, sino que su disponibilidad se calcula dinámicamente mediante las funciones `current_status()` y `is_voting_open()`. Estas comparan constantemente el tiempo del servidor (`datetime.utcnow()`) con `start_date` y `end_date`, cerrando y abriendo las urnas de forma automática. Lo mismo ocurre con el modelo `SystemSettings` que abre o cierra el registro de nuevos usuarios sin intervención manual.
+
+### C. Validación Biométrica Zero-Trust
+El sistema implementa validación Face ID desde el cliente. El `Voter` almacena un `face_descriptor` (un vector de 128 dimensiones). Al votar, la Inteligencia Artificial calcula la Distancia Euclidiana entre el rostro en la webcam y el vector almacenado. El servidor nunca procesa imágenes fotográficas, garantizando la privacidad y minimizando el riesgo de suplantación de identidad.
